@@ -45,7 +45,7 @@ A modern, interactive Business Model Canvas dashboard built with Next.js, TypeSc
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/flyingwebie/business-model-canvas.git
 cd flyingweb-business-canvas
 ```
 
