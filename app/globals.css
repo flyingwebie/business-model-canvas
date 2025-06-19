@@ -3,6 +3,58 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Print Layout Variables */
+  --print-container-padding: 16px;
+  --print-base-font-size: 11px;
+  --print-line-height: 1.3;
+  --print-page-margin: 0.5in;
+
+  /* Print Spacing Variables */
+  --print-section-spacing: 8px;
+  --print-header-spacing: 16px;
+  --print-card-padding: 12px;
+  --print-small-padding: 8px;
+  --print-tiny-padding: 4px;
+
+  /* Print Typography Variables */
+  --print-h1-size: 22px;
+  --print-h2-size: 16px;
+  --print-xl-size: 16px;
+  --print-lg-size: 14px;
+  --print-base-size: 12px;
+  --print-sm-size: 11px;
+  --print-xs-size: 10px;
+
+  /* Print Margin Variables */
+  --print-section-margin: 24px;
+  --print-header-margin: 12px;
+  --print-content-margin: 6px;
+  --print-small-margin: 4px;
+  --print-tiny-margin: 3px;
+
+  /* Print Color Variables */
+  --print-border-color: #333;
+  --print-green-bg: #f0f9f0;
+  --print-green-border: #86d186;
+  --print-green-text-dark: #166534;
+  --print-green-text: #15803d;
+  --print-blue-bg-light: #eff6ff;
+  --print-blue-bg: #dbeafe;
+  --print-blue-border: #93c5fd;
+  --print-blue-text-dark: #1d4ed8;
+  --print-blue-text: #3b82f6;
+  --print-gray-bg: #f9fafb;
+  --print-gray-border-light: #e5e7eb;
+  --print-gray-border: #d1d5db;
+  --print-gray-text-dark: #1f2937;
+  --print-gray-text: #374151;
+  --print-gray-text-medium: #4b5563;
+  --print-gray-text-light: #6b7280;
+
+  /* Print Image Variables */
+  --print-image-size: 60px;
+  --print-border-radius: 4px;
 }
 
 @theme inline {
@@ -27,4 +79,288 @@ body {
 
 ul li {
   margin: 0;
+}
+
+/* Print Styles */
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .print-container {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: var(--print-container-padding) !important;
+    background: white !important;
+    font-size: var(--print-base-font-size) !important;
+    line-height: var(--print-line-height) !important;
+  }
+
+  .meta-info-container {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-around !important;
+    gap: 8px !important;
+  }
+
+  /* Compact section spacing for print */
+  .print-container .mb-8 {
+    margin-bottom: var(--print-section-margin) !important;
+  }
+
+  .print-container .mb-12 {
+    margin-bottom: var(--print-header-margin) !important;
+  }
+
+  .print-container .space-y-6 {
+    gap: var(--print-section-margin) !important;
+  }
+
+  .print-container .space-y-6 > * + * {
+    margin-top: var(--print-section-margin) !important;
+  }
+
+  .print-container .space-y-3 > * + * {
+    margin-top: var(--print-tiny-padding) !important;
+  }
+
+  /* Header adjustments - more compact */
+  .print-container h1 {
+    font-size: var(--print-h1-size) !important;
+    margin-bottom: var(--print-section-margin) !important;
+  }
+
+  .print-container h2 {
+    font-size: var(--print-h2-size) !important;
+    margin-bottom: var(--print-content-margin) !important;
+  }
+
+  /* Section cards - reduced padding */
+  .print-container .border {
+    border: 1px solid var(--print-border-color) !important;
+  }
+
+  .print-container .shadow-sm {
+    box-shadow: none !important;
+  }
+
+  /* Reduce padding on cards */
+  .print-container .p-6 {
+    padding: var(--print-card-padding) !important;
+  }
+
+  .print-container .p-4 {
+    padding: var(--print-small-padding) !important;
+  }
+
+  .print-container .p-8 {
+    padding: var(--print-container-padding) !important;
+  }
+
+  .print-container .p-3 {
+    padding: var(--print-tiny-padding) !important;
+  }
+
+  /* Header section spacing */
+  .print-container .pb-8 {
+    padding-bottom: var(--print-header-margin) !important;
+  }
+
+  .print-container .pt-8 {
+    padding-top: var(--print-header-margin) !important;
+  }
+
+  .print-container .pb-4 {
+    padding-bottom: var(--print-small-padding) !important;
+  }
+
+  .print-container .pt-4 {
+    padding-top: var(--print-small-padding) !important;
+  }
+
+  /* Color preservation */
+  .print-container .bg-green-50 {
+    background-color: var(--print-green-bg) !important;
+  }
+
+  .print-container .border-green-200 {
+    border-color: var(--print-green-border) !important;
+  }
+
+  .print-container .text-green-800 {
+    color: var(--print-green-text-dark) !important;
+  }
+
+  .print-container .text-green-700 {
+    color: var(--print-green-text) !important;
+  }
+
+  .print-container .bg-blue-100 {
+    background-color: var(--print-blue-bg) !important;
+  }
+
+  .print-container .text-blue-700 {
+    color: var(--print-blue-text-dark) !important;
+  }
+
+  .print-container .bg-blue-50 {
+    background-color: var(--print-blue-bg-light) !important;
+  }
+
+  .print-container .border-blue-300 {
+    border-color: var(--print-blue-border) !important;
+  }
+
+  .print-container .text-blue-500 {
+    color: var(--print-blue-text) !important;
+  }
+
+  .print-container .bg-gray-50 {
+    background-color: var(--print-gray-bg) !important;
+  }
+
+  .print-container .text-gray-700 {
+    color: var(--print-gray-text) !important;
+  }
+
+  .print-container .text-gray-800 {
+    color: var(--print-gray-text-dark) !important;
+  }
+
+  .print-container .text-gray-600 {
+    color: var(--print-gray-text-medium) !important;
+  }
+
+  .print-container .text-gray-500 {
+    color: var(--print-gray-text-light) !important;
+  }
+
+  .print-container .border-gray-300 {
+    border-color: var(--print-gray-border) !important;
+  }
+
+  .print-container .border-gray-200 {
+    border-color: var(--print-gray-border-light) !important;
+  }
+
+  /* Typography adjustments for print - more compact */
+  .print-container .text-4xl {
+    font-size: calc(var(--print-h1-size) + 2px) !important;
+  }
+
+  .print-container .text-3xl {
+    font-size: var(--print-h1-size) !important;
+  }
+
+  .print-container .text-2xl {
+    font-size: calc(var(--print-h2-size) + 2px) !important;
+  }
+
+  .print-container .text-xl {
+    font-size: var(--print-xl-size) !important;
+  }
+
+  .print-container .text-lg {
+    font-size: var(--print-lg-size) !important;
+  }
+
+  .print-container .text-base {
+    font-size: var(--print-base-size) !important;
+  }
+
+  .print-container .text-sm {
+    font-size: var(--print-sm-size) !important;
+  }
+
+  .print-container .text-xs {
+    font-size: var(--print-xs-size) !important;
+  }
+
+  /* Hide elements that shouldn't print */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Compact margin and padding adjustments */
+  .print-container .mb-4 {
+    margin-bottom: var(--print-content-margin) !important;
+  }
+
+  .print-container .mb-3 {
+    margin-bottom: var(--print-small-margin) !important;
+  }
+
+  .print-container .mb-2 {
+    margin-bottom: var(--print-tiny-margin) !important;
+  }
+
+  .print-container .mb-6 {
+    margin-bottom: var(--print-section-margin) !important;
+  }
+
+  .print-container .mb-1 {
+    margin-bottom: 2px !important;
+  }
+
+  .print-container .mt-12 {
+    margin-top: 15px !important;
+  }
+
+  .print-container .mt-6 {
+    margin-top: var(--print-content-margin) !important;
+  }
+
+  /* Prose content spacing */
+  .print-container .prose p {
+    margin-bottom: var(--print-content-margin) !important;
+  }
+
+  .print-container .prose ul {
+    margin-bottom: var(--print-content-margin) !important;
+  }
+
+  .print-container .prose li {
+    margin-bottom: 2px !important;
+  }
+
+  .print-container .prose hr {
+    margin: var(--print-section-margin) 0 !important;
+  }
+
+  .print-container .prose blockquote {
+    margin: var(--print-content-margin) 0 !important;
+    padding: var(--print-small-margin) !important;
+  }
+
+  /* Page settings - A4 portrait for vertical layout */
+  @page {
+    size: A4 portrait;
+    margin: var(--print-page-margin);
+  }
+
+  /* Ensure proper page breaks */
+  .print-page-break {
+    page-break-before: always;
+  }
+
+  /* Prevent orphaned content */
+  /* .print-container .space-y-6 > div,
+  .print-container .space-y-3 > div {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  } */
+
+  /* Compact header spacing */
+  .print-container .rounded-lg {
+    border-radius: var(--print-border-radius) !important;
+  }
+
+  /* Reduce image size in print */
+  .print-container img {
+    max-width: var(--print-image-size) !important;
+    max-height: var(--print-image-size) !important;
+  }
 }

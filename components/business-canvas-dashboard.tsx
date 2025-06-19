@@ -1,17 +1,29 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { LayoutGrid, List, Loader2 } from 'lucide-react';
+import {
+  LayoutGrid,
+  List,
+  Loader2,
+  Printer,
+  Download,
+  Copy,
+  FileText,
+} from 'lucide-react';
 import { CanvasGrid } from './canvas-grid';
 import { CanvasTabs } from './canvas-tabs';
 import { CanvasSection, fetchCanvasSections } from '@/lib/canvas-data';
+import { downloadMarkdown, copyMarkdownToClipboard } from '@/lib/print-utils';
+import { generateCanvasPDF } from '@/lib/pdf-utils';
+import { ToastProvider, useToast } from '@/components/ui/toast';
 import Image from 'next/image';
 
-export function BusinessCanvasDashboard() {
+function BusinessCanvasDashboardContent() {
   const [viewMode, setViewMode] = useState<'grid' | 'tabs'>('grid');
   const [sections, setSections] = useState<CanvasSection[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { showToast } = useToast();
 
   useEffect(() => {
     async function loadSections() {
@@ -30,6 +42,41 @@ export function BusinessCanvasDashboard() {
 
     loadSections();
   }, []);
+
+  const handlePrint = () => {
+    // Open print page in new window
+    window.open('/print', '_blank');
+  };
+
+  const handleDownloadMarkdown = async () => {
+    try {
+      await downloadMarkdown(sections);
+      showToast('Business Model Canvas downloaded successfully!', 'success');
+    } catch (error) {
+      showToast('Failed to download canvas', 'error');
+      console.error('Download error:', error);
+    }
+  };
+
+  const handleCopyMarkdown = async () => {
+    try {
+      await copyMarkdownToClipboard(sections);
+      showToast('Canvas copied to clipboard!', 'success');
+    } catch (error) {
+      showToast('Failed to copy canvas to clipboard', 'error');
+      console.error('Copy error:', error);
+    }
+  };
+
+  const handleDownloadPDF = async () => {
+    try {
+      await generateCanvasPDF(sections);
+      showToast('PDF generated successfully!', 'success');
+    } catch (error) {
+      showToast('Failed to generate PDF', 'error');
+      console.error('PDF generation error:', error);
+    }
+  };
 
   if (loading) {
     return (
@@ -95,30 +142,68 @@ export function BusinessCanvasDashboard() {
               </div>
             </div>
 
-            {/* View Toggle */}
-            <div className="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
-              <button
-                onClick={() => setViewMode('grid')}
-                className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  viewMode === 'grid'
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <LayoutGrid className="h-4 w-4" />
-                <span>Grid View</span>
-              </button>
-              <button
-                onClick={() => setViewMode('tabs')}
-                className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  viewMode === 'tabs'
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <List className="h-4 w-4" />
-                <span>Tabs View</span>
-              </button>
+            <div className="flex items-center space-x-4">
+              {/* Export Actions */}
+              <div className="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
+                <button
+                  onClick={handlePrint}
+                  className="flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 hover:text-gray-900 hover:bg-white"
+                  title="Print Canvas"
+                >
+                  <Printer className="h-4 w-4" />
+                  <span>Print</span>
+                </button>
+                <button
+                  onClick={handleDownloadPDF}
+                  className="flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 hover:text-gray-900 hover:bg-white"
+                  title="Download as PDF"
+                >
+                  <FileText className="h-4 w-4" />
+                  <span>PDF</span>
+                </button>
+                <button
+                  onClick={handleDownloadMarkdown}
+                  className="flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 hover:text-gray-900 hover:bg-white"
+                  title="Download as Markdown"
+                >
+                  <Download className="h-4 w-4" />
+                  <span>Download MD</span>
+                </button>
+                <button
+                  onClick={handleCopyMarkdown}
+                  className="flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 hover:text-gray-900 hover:bg-white"
+                  title="Copy Markdown to Clipboard"
+                >
+                  <Copy className="h-4 w-4" />
+                  <span>Copy MD</span>
+                </button>
+              </div>
+
+              {/* View Toggle */}
+              <div className="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
+                <button
+                  onClick={() => setViewMode('grid')}
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    viewMode === 'grid'
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  <LayoutGrid className="h-4 w-4" />
+                  <span>Grid View</span>
+                </button>
+                <button
+                  onClick={() => setViewMode('tabs')}
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    viewMode === 'tabs'
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  <List className="h-4 w-4" />
+                  <span>Tabs View</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -149,5 +234,13 @@ export function BusinessCanvasDashboard() {
         </div>
       </footer>
     </div>
+  );
+}
+
+export function BusinessCanvasDashboard() {
+  return (
+    <ToastProvider>
+      <BusinessCanvasDashboardContent />
+    </ToastProvider>
   );
 }
